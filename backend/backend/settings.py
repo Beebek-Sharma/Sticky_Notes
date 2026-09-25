@@ -1,4 +1,4 @@
-"""
+﻿"""
 Django settings for Sticky_Notes project.
 
 Production-ready settings configured for Railway deployment and local development.
@@ -102,13 +102,29 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 # Database
 # Uses DATABASE_URL if provided (e.g. Railway Postgres plugin), falls back to SQLite
-DATABASES = {
-    'default': dj_database_url.config(
-        default=f"sqlite:///{BASE_DIR / 'db.sqlite3'}",
-        conn_max_age=600,
-        conn_health_checks=True,
-    )
-}
+raw_db_url = os.getenv('DATABASE_URL', '').strip()
+if raw_db_url and not raw_db_url.startswith('VALUE') and not raw_db_url.startswith('${{'):
+    try:
+        DATABASES = {
+            'default': dj_database_url.config(
+                conn_max_age=600,
+                conn_health_checks=True,
+            )
+        }
+    except Exception:
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': BASE_DIR / 'db.sqlite3',
+            }
+        }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -171,3 +187,4 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.MultiPartParser',
     ],
 }
+
