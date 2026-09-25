@@ -209,8 +209,12 @@ export default function NoteBoard() {
       {/* Top Navigation Bar */}
       <header className="stitch-navbar">
         <div className="brand-section">
-          <div className="brand-logo-badge">
-            <span className="material-symbols-outlined text-[18px]">note_stack</span>
+          <div className="brand-logo-badge" title="Sticky Notes">
+            <img
+              src={`${process.env.PUBLIC_URL || ''}/favicon.png`}
+              alt="Sticky Notes Icon"
+              className="brand-icon-img"
+            />
           </div>
           <h1 className="brand-title">StickyNotes</h1>
 
