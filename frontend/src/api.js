@@ -1,6 +1,12 @@
 import axios from 'axios';
 
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000/api';
+// In production, fallback to relative '/api' for zero-CORS single-service deployments,
+// or use REACT_APP_API_BASE_URL when frontend and backend are deployed as separate Railway services.
+export const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL ||
+  (process.env.NODE_ENV === 'production'
+    ? '/api'
+    : 'http://localhost:8000/api');
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
